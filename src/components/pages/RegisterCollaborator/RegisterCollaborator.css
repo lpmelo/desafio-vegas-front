@@ -1,0 +1,29 @@
+.register-title {
+  text-align: left;
+}
+
+.container-form {
+  border-width: 0.5px;
+  border-style: solid;
+  border-radius: 1%;
+  box-shadow: 1px 1px 3px #ddd9d9;
+  border-color: rgb(226, 216, 216);
+  margin: 10px;
+  align-items: flex-end;
+}
+
+.form {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.row-form {
+  justify-content: right !important;
+}
+
+.btn-submit {
+  position: inherit;
+  top: 45px;
+  right: 23px;
+  z-index: 1;
+}
