@@ -32,6 +32,7 @@
 
 .content-container {
   margin: 10px;
+  width: 100%;
 }
 
 .menu-container {
@@ -47,6 +48,14 @@
   display: flex !important;
   align-items: center;
   justify-content: center;
+  height: 70px;
+  font-size: 12.1px;
+}
+
+.menu-item-submit {
+  display: flex !important;
+  align-items: center;
+  justify-content: left;
   height: 70px;
   font-size: 12.1px;
 }

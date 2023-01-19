@@ -15,7 +15,7 @@ import IconEye from "./components/icons/IconEye";
 import IconHome from "./components/icons/IconHome";
 
 const App = () => {
-  const [activeItem, setActiveItem] = useState("home");
+  const [activeItem, setActiveItem] = useState(0);
   const pageElementSwitcher = useSelector((state) => state.pageSwitcher.item);
   const dispatch = useDispatch();
   const returnPageContent = (pageElementNumber) => {
@@ -29,14 +29,14 @@ const App = () => {
     return formattedIndex;
   };
 
-  const handleItemClick = (e, { name }) => {
-    name === "home"
+  const handleItemClick = (e, { index }) => {
+    index === 0
       ? dispatch(switchToHome())
-      : name === "Cadastro de entregas"
+      : index === 1
       ? dispatch(switchToRegisterDelivery())
       : dispatch(switchToTableDelivery());
 
-    setActiveItem(name);
+    setActiveItem(index);
   };
 
   return (
@@ -52,24 +52,27 @@ const App = () => {
             className="menu"
           >
             <Menu.Item
-              name="home"
+              name="Pagina Inicial"
+              index={0}
               icon={<IconHome className="menu-icon" />}
               className="menu-item"
-              active={activeItem === "home"}
+              active={activeItem === 0}
               onClick={handleItemClick}
             />
             <Menu.Item
               name="Cadastro de Colaborador"
+              index={1}
               icon={<IconBox className="menu-icon" />}
-              className="menu-item"
-              active={activeItem === "Cadastro de Colaborador"}
+              className="menu-item-submit"
+              active={activeItem === 1}
               onClick={handleItemClick}
             />
             <Menu.Item
               name="Visualizar entregas"
+              index={2}
               icon={<IconEye className="menu-icon" />}
               className="menu-item"
-              active={activeItem === "Visualizar entregas"}
+              active={activeItem === 2}
               onClick={handleItemClick}
             />
           </Menu>
