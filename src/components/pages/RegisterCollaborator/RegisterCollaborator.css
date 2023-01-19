@@ -1,11 +1,25 @@
+.form-container {
+  height: 100%;
+  font-family: system-ui;
+}
+
+.grid-container {
+  height: 100%;
+}
 .register-title {
   text-align: left;
+}
+
+.row-title {
+  height: 10%;
+  padding-bottom: 0;
 }
 
 .container-form {
   border-width: 0.5px;
   border-style: solid;
   border-radius: 1%;
+  height: 100%;
   box-shadow: 1px 1px 3px #ddd9d9;
   border-color: rgb(226, 216, 216);
   margin: 10px;
@@ -18,6 +32,8 @@
 }
 
 .row-form {
+  padding-top: 0 !important;
+  height: 80%;
   justify-content: right !important;
 }
 
@@ -26,4 +42,9 @@
   top: 45px;
   right: 23px;
   z-index: 1;
+  transition: transform 500ms !important;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
 }

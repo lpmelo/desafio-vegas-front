@@ -155,12 +155,12 @@ const RegisterCollaborator = () => {
   }, [formValues.deliveryDate]);
 
   return (
-    <div>
-      <Segment>
-        <Grid>
-          <Grid.Row columns={1}>
+    <>
+      <Segment className="form-container">
+        <Grid className="grid-container">
+          <Grid.Row columns={1} className="row-title">
             <Grid.Column className="register-title">
-              <h1>Cadastrar nova entrega</h1>
+              <h1>Cadastrar novo Colaborador</h1>
               {submitSuccess && (
                 <Message
                   success
@@ -184,7 +184,7 @@ const RegisterCollaborator = () => {
               content="Incluir"
               className="btn-submit"
               onClick={() => handleSubmit()}
-            ></Button>
+            />
             <Grid.Column className="container-form">
               <Form className="form">
                 <Form.Group>
@@ -316,7 +316,7 @@ const RegisterCollaborator = () => {
           </Grid.Row>
         </Grid>
       </Segment>
-    </div>
+    </>
   );
 };
 
