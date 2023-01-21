@@ -3,9 +3,12 @@ export const cepError = {
   pointing: "above",
 };
 
+export const cpfError = "Por favor, insira o documento CPF corretamente";
+
 export const formInitialState = {
   formData: {
     clientName: "",
+    cpf: "",
     deliveryDate: "",
     cep: "",
     uf: "",
@@ -14,11 +17,17 @@ export const formInitialState = {
     address: "",
     number: "",
     complement: "",
+    occupation: "",
   },
   messages: {},
   submitEvents: {
     submitFailed: false,
     submitSuccess: false,
+  },
+  autoComplete: {
+    loading: false,
+    results: [],
+    value: "",
   },
 };
 
@@ -40,6 +49,13 @@ const validateCep = (value) => {
   return false;
 };
 
+const validateCpf = (value) => {
+  if (value.length < 11) {
+    return true;
+  }
+  return false;
+};
+
 const genericValidation = (value) => {
   if (!value.length) {
     return true;
@@ -50,13 +66,15 @@ const genericValidation = (value) => {
 const errorMessage = (fieldName) => {
   const allErrors = {
     clientName: "Campo obrigatório",
+    cpf: cpfError,
     deliveryDate: "Campo obrigatório",
-    cep: cepError,
+    cep: cepError.content,
     uf: "Campo obrigatório",
     city: "Campo obrigatório",
     district: "Campo obrigatório",
     address: "Campo obrigatório",
     number: "Campo obrigatório",
+    occupation: "Campo obrigatório",
   };
 
   const errorMessage = allErrors[fieldName];
@@ -75,6 +93,7 @@ export const isValidCep = (fieldName, fieldLenght) => {
 export const validateFields = (fieldId, fieldValue) => {
   const fieldsId = {
     clientName: () => genericValidation(fieldValue),
+    cpf: () => validateCpf(fieldValue),
     deliveryDate: () => genericValidation(fieldValue),
     cep: () => validateCep(fieldValue),
     uf: () => genericValidation(fieldValue),
@@ -82,6 +101,7 @@ export const validateFields = (fieldId, fieldValue) => {
     district: () => genericValidation(fieldValue),
     address: () => genericValidation(fieldValue),
     number: () => genericValidation(fieldValue),
+    occupation: () => genericValidation(fieldValue),
   };
 
   const fieldValidate =

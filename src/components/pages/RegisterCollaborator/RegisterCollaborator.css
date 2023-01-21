@@ -1,6 +1,7 @@
 .form-container {
   height: 100%;
   font-family: system-ui;
+  overflow-y: scroll;
 }
 
 .grid-container {
@@ -47,4 +48,21 @@
 
 .btn-submit:hover {
   transform: translateY(-3px);
+}
+
+.autocomplete-result-container {
+  display: flex;
+  width: 100% !important;
+  height: 100% !important;
+  flex-wrap: wrap;
+}
+
+.autocomplete-result-title {
+  width: 100% !important;
+  justify-content: flex-start;
+}
+
+.autocomplete-result-payment {
+  margin-top: 10%;
+  width: 100%;
 }

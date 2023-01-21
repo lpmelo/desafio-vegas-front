@@ -1,0 +1,21 @@
+.result-segment {
+}
+
+.result-segment:hover {
+  transition: transform 500ms;
+  transform: translateY(-5px);
+  box-shadow: 0 0 3px rgb(96, 163, 226) !important;
+}
+.result-container {
+  width: 100% !important;
+}
+
+.label-options {
+  font-size: 10px !important;
+}
+
+p {
+  font-family: system-ui;
+  font-size: 12px;
+  font-weight: bold;
+}
