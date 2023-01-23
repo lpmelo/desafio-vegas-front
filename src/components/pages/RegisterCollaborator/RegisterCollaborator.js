@@ -22,6 +22,7 @@ import {
   finishSearchAutoCompleteAction,
   searchAutoCompleteAction,
   updateSelectAutoCompleteAction,
+  setIsLoading,
 } from "./features/registerCollaboratorSlice";
 import { getCep } from "../../../ApiCep";
 import IconUserCicle from "../../icons/IconUserCicle";
@@ -32,6 +33,7 @@ import SemanticUiReduxAutoComplete from "../../../lib/elementComponents/Semantic
 import AutoCompleteResultsRenderer from "./AutoCompleteResultsRenderer/AutoCompleteResultsRenderer";
 import IconIdCard from "../../icons/IconIdCard";
 import moment from "moment";
+import SemanticUiLoader from "../../../lib/elementComponents/Loader/SemanticUiLoader";
 
 const RegisterCollaborator = () => {
   const [hasValue, setHasValue] = useState(false);
@@ -43,9 +45,12 @@ const RegisterCollaborator = () => {
     (state) => state.registerCollaborator.formData
   );
   const messages = useSelector((state) => state.registerCollaborator.messages);
+
   const { submitSuccess, submitFailed } = useSelector(
     (state) => state.registerCollaborator.submitEvents
   );
+
+  const { isLoading } = useSelector((state) => state.registerCollaborator);
 
   const mockOptions = [
     {
@@ -163,6 +168,27 @@ const RegisterCollaborator = () => {
     }
   };
 
+  const postNewCollaboratorWork = async (collaborator) => {
+    dispatch(setIsLoading(true));
+    await postNewCollaborator(
+      collaborator.id,
+      collaborator.clientName,
+      collaborator.cpf,
+      collaborator.admissionDate,
+      collaborator.cep,
+      collaborator.uf,
+      collaborator.city,
+      collaborator.district,
+      collaborator.address,
+      collaborator.number,
+      collaborator.complement,
+      collaborator.occupation
+    ).then((res) =>
+      res.message ? onSuccess() : console.log(res.response.data.message)
+    );
+    dispatch(setIsLoading(false));
+  };
+
   const handleSubmit = () => {
     let haveError = false;
     const formKeys = Object.keys(formValues);
@@ -177,22 +203,22 @@ const RegisterCollaborator = () => {
 
       const formattedDate = date.format("YYYY-MM-DD");
 
-      postNewCollaborator(
-        newId,
-        formValues.clientName,
-        formValues.cpf,
-        formattedDate,
-        formValues.cep,
-        formValues.uf,
-        formValues.city,
-        formValues.district,
-        formValues.address,
-        Number(formValues.number),
-        formValues.complement,
-        formValues.occupation
-      ).then((res) =>
-        res.message ? onSuccess() : console.log(res.response.data.message)
-      );
+      const collaborator = {
+        id: newId,
+        clientName: formValues.clientName,
+        cpf: formValues.cpf,
+        admissionDate: formattedDate,
+        cep: formValues.cep,
+        uf: formValues.uf,
+        city: formValues.city,
+        district: formValues.district,
+        address: formValues.address,
+        number: Number(formValues.number),
+        complement: formValues.complement,
+        occupation: formValues.occupation,
+      };
+
+      postNewCollaboratorWork(collaborator);
     }
   };
 
@@ -245,12 +271,26 @@ const RegisterCollaborator = () => {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row className="row-form" columns={1}>
-            <Button
-              icon={IconPlus}
-              content="Incluir"
-              className="btn-submit"
-              onClick={() => handleSubmit()}
-            />
+            {isLoading ? (
+              <>
+                <SemanticUiLoader
+                  active
+                  size={"small"}
+                  content={"Inserindo colaborador"}
+                  className="loader-insert-collaborator"
+                />
+              </>
+            ) : (
+              <>
+                <Button
+                  icon={IconPlus}
+                  content="Incluir"
+                  className="btn-submit"
+                  onClick={() => handleSubmit()}
+                />
+              </>
+            )}
+
             <Grid.Column className="container-form">
               <Form className="form">
                 <Form.Group>
@@ -267,6 +307,7 @@ const RegisterCollaborator = () => {
                     onChange={(e) => handleChange(e, "clientName")}
                     onBlur={(e) => handleBlur(e)}
                     required
+                    disabled={isLoading}
                   />
                   <Form.Field width={8}>
                     <SemanticUiReduxAutoComplete
@@ -284,6 +325,7 @@ const RegisterCollaborator = () => {
                       resultRenderer={resultRenderer}
                       label="Função"
                       required
+                      disabled={isLoading}
                     />
                   </Form.Field>
                 </Form.Group>
@@ -301,6 +343,7 @@ const RegisterCollaborator = () => {
                     onChange={(e) => handleChange(e, "cpf")}
                     onBlur={(e) => handleBlur(e)}
                     required
+                    disabled={isLoading}
                   />
                   <Form.Field width={4}>
                     <DateInput
@@ -319,6 +362,7 @@ const RegisterCollaborator = () => {
                       closable
                       value={formValues.admissionDate}
                       required
+                      disabled={isLoading}
                     />
                   </Form.Field>
 
@@ -336,6 +380,7 @@ const RegisterCollaborator = () => {
                     onChange={(e) => handleChange(e, "cep")}
                     onBlur={(e) => handleBlur(e)}
                     required
+                    disabled={isLoading}
                   />
                 </Form.Group>
                 <Form.Group>
@@ -348,7 +393,7 @@ const RegisterCollaborator = () => {
                     value={formValues.city}
                     onChange={(e) => handleChange(e, "city")}
                     onBlur={(e) => handleBlur(e)}
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
                     required
                   />
                   <Form.Input
@@ -360,7 +405,7 @@ const RegisterCollaborator = () => {
                     value={formValues.uf}
                     onChange={(e) => handleChange(e, "uf")}
                     onBlur={(e) => handleBlur(e)}
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
                     required
                   />
                   <Form.Input
@@ -372,7 +417,7 @@ const RegisterCollaborator = () => {
                     value={formValues.address}
                     onChange={(e) => handleChange(e, "address")}
                     onBlur={(e) => handleBlur(e)}
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
                     required
                   />
                   <Form.Input
@@ -382,7 +427,7 @@ const RegisterCollaborator = () => {
                     error={hasValue && messages.number && messages.number}
                     width={2}
                     value={formValues.number}
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
                     onChange={(e) => handleChange(e, "number")}
                     onBlur={(e) => handleBlur(e)}
                     required
@@ -398,7 +443,7 @@ const RegisterCollaborator = () => {
                     value={formValues.district}
                     onChange={(e) => handleChange(e, "district")}
                     onBlur={(e) => handleBlur(e)}
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
                     required
                   />
                   <Form.Input
@@ -408,7 +453,7 @@ const RegisterCollaborator = () => {
                     width={8}
                     value={formValues.complement}
                     onChange={(e) => handleChange(e, "complement")}
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
                   />
                 </Form.Group>
               </Form>

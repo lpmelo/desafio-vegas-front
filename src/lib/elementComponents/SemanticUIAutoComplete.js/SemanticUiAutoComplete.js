@@ -18,6 +18,7 @@ const SemanticUiReduxAutoComplete = ({
   label,
   required,
   error,
+  disabled,
 }) => {
   const dispatch = useDispatch();
 
@@ -30,15 +31,27 @@ const SemanticUiReduxAutoComplete = ({
     const defaultLabel = "autocomplete-label";
     const requiredLabelError = "autocomplete-label-required error";
     const defaultLabelError = "autocomplete-label error";
-    if (error) {
+    const disabledDefaultLabel = "autocomplete-label disabled-label";
+    const disabledRequiredLabel = "autocomplete-label-required disabled-label";
+
+    if (disabled) {
       if (required) {
-        return requiredLabelError;
+        return disabledRequiredLabel;
+      } else {
+        return disabledDefaultLabel;
       }
-      return defaultLabelError;
+    } else {
+      if (error) {
+        if (required) {
+          return requiredLabelError;
+        }
+        return defaultLabelError;
+      }
+      if (required) {
+        return requiredLabel;
+      }
     }
-    if (required) {
-      return requiredLabel;
-    }
+
     return defaultLabel;
   };
 
@@ -89,6 +102,7 @@ const SemanticUiReduxAutoComplete = ({
         value={value}
         resultRenderer={resultRenderer}
         input={<Form.Input error={error} />}
+        disabled={disabled}
       />
     </>
   );

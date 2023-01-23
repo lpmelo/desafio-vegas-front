@@ -1,0 +1,23 @@
+.collapse-container {
+  cursor: pointer;
+}
+
+.table-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.card-table-container {
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: scroll;
+}
+
+.sub-row {
+  background-color: rgb(243, 247, 250);
+}
+
+.loader-get-collaborators {
+  font-family: system-ui;
+  font-weight: bold;
+}

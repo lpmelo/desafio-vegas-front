@@ -60,7 +60,7 @@ export const getAllCollaborators = async () => {
       return res.data;
     }
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 
@@ -75,7 +75,7 @@ export const getCollaboratorById = async (id) => {
       return res.data;
     }
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 
@@ -93,7 +93,7 @@ export const editCollaborator = async (
   complement
 ) => {
   try {
-    const res = await axios.post(
+    const res = await axios.put(
       `${REACT_APP_LARAVEL_API_BASE_URL}${REACT_APP_LARAVEL_API_ROUTE_PUT}${id}`,
       {
         clientName,
@@ -113,13 +113,13 @@ export const editCollaborator = async (
       return res.data;
     }
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 
 export const deleteCollaborator = async (id) => {
   try {
-    const res = await axios.get(
+    const res = await axios.delete(
       `${REACT_APP_LARAVEL_API_BASE_URL}${REACT_APP_LARAVEL_API_DELETE}${id}`,
       {}
     );
@@ -128,6 +128,6 @@ export const deleteCollaborator = async (id) => {
       return res.data;
     }
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };

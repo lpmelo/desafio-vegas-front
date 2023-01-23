@@ -9,6 +9,8 @@ import IconCalendarAlternate from "../../../icons/IconCalendarAlternate";
 import GoogleMapsComponent from "../../../../lib/apiElements/googleMaps/GoogleMapsComponent";
 import "./RegisterTableRow.css";
 import { getGeocode } from "../../../../ApiGoogleGeocode";
+import IconShoppingBag from "../../../icons/IconShoppingBag";
+import IconIdCard from "../../../icons/IconIdCard";
 
 const RegisterTableRow = ({ props }) => {
   const [local, setLocal] = useState({ lat: 0, lng: 0 });
@@ -29,13 +31,23 @@ const RegisterTableRow = ({ props }) => {
     <>
       <Table.Row>
         <Table.Cell width={4}>
-          <Segment className="deliveries-data-list">
-            <Label attached="top">Dados da entrega</Label>
+          <Segment className="collaborators-data-list">
+            <Label attached="top">Dados do colaborador</Label>
             <List animated>
               <List.Item
                 className="list-item"
                 icon={IconUserCicle}
                 content={props.clientName}
+              />
+              <List.Item
+                className="list-item"
+                icon={IconShoppingBag}
+                content={props.occupation}
+              />
+              <List.Item
+                className="list-item"
+                icon={IconIdCard}
+                content={props.cpf}
               />
               <List.Item
                 className="list-item"
@@ -64,14 +76,14 @@ const RegisterTableRow = ({ props }) => {
               <List.Item
                 className="list-item"
                 icon={IconCalendarAlternate}
-                content={props.deliveryDate}
+                content={props.admissionDate}
               />
             </List>
           </Segment>
         </Table.Cell>
         <Table.Cell width={7}>
           <Segment>
-            <Label attached="top">Local da entrega</Label>
+            <Label attached="top">Local de residência do colaborador</Label>
             <div className="map-container">
               <GoogleMapsComponent
                 containerStyle={{ width: "100%", height: "100%" }}

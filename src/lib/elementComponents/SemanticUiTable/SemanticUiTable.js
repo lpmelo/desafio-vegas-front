@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "semantic-ui-react";
+import "./SemanticUiTable.css";
 
 const SemanticUiTable = ({
   color,
@@ -8,13 +9,31 @@ const SemanticUiTable = ({
   SemanticUiTableRow,
   data,
   subTable,
+  tableClassName,
 }) => {
+  const returnHeadCellPosition = (position) => {
+    const allPositions = {
+      center: "center",
+      left: "left",
+      right: "right",
+    };
+
+    const headcellPosition = allPositions[position];
+
+    return headcellPosition;
+  };
   return (
-    <Table color={color} key={key}>
+    <Table color={color} key={key} className={tableClassName}>
       <Table.Header>
         <Table.Row>
           {headCells.map((headCell) => {
-            return <Table.HeaderCell>{headCell}</Table.HeaderCell>;
+            return (
+              <Table.HeaderCell
+                className={returnHeadCellPosition(headCell.position)}
+              >
+                {headCell.name}
+              </Table.HeaderCell>
+            );
           })}
         </Table.Row>
       </Table.Header>

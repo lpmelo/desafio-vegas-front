@@ -29,6 +29,7 @@ export const formInitialState = {
     results: [],
     value: "",
   },
+  isLoading: false,
 };
 
 export const requiredFields = [

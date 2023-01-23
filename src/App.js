@@ -9,10 +9,10 @@ import {
 } from "./features/pageSwitcher/pageSwitcherSlice";
 import HomePage from "./components/pages/HomePage/HomePage";
 import RegisterCollaborator from "./components/pages/RegisterCollaborator/RegisterCollaborator";
-import VisualizeDeliveries from "./components/pages/VisualizeDeliveries/VisualizeDeliveries";
 import IconEye from "./components/icons/IconEye";
 import IconHome from "./components/icons/IconHome";
 import IconUserPlus from "./components/icons/IconUserPlus";
+import VisualizeCollaborators from "./components/pages/VisualizeCollaborators/VisualizeCollaborators";
 
 const App = () => {
   const [activeItem, setActiveItem] = useState(0);
@@ -22,7 +22,7 @@ const App = () => {
     const index = {
       0: <HomePage />,
       1: <RegisterCollaborator />,
-      2: <VisualizeDeliveries />,
+      2: <VisualizeCollaborators />,
     };
 
     const formattedIndex = index[pageElementNumber];
@@ -68,7 +68,7 @@ const App = () => {
               onClick={handleItemClick}
             />
             <Menu.Item
-              name="Visualizar entregas"
+              name="Visualizar colaboradores"
               index={2}
               icon={<IconEye className="menu-icon" />}
               className="menu-item"
