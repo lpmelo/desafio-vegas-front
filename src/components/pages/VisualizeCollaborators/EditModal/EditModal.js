@@ -155,16 +155,9 @@ const EditModal = () => {
     let needToLock = false;
     const keys = Object.keys(initialState);
 
-    const returnDateFormatted = (dateToFormat) => {
-      const dateWhithoutFormat = moment(dateToFormat, "DD/MM/YYYY");
-
-      const formattedDate = dateWhithoutFormat.format("YYYY-MM-DD");
-      return formattedDate;
-    };
-
     keys.forEach((key) =>
       key === "admissionDate"
-        ? initialState[key] != returnDateFormatted(actualState[key])
+        ? initialState[key] != actualState[key]
           ? (hasChanges = true)
           : ""
         : initialState[key] != actualState[key]
@@ -173,17 +166,15 @@ const EditModal = () => {
     );
 
     keys.forEach((key) =>
-      key !== "complement"
+      key === "complement"
         ? actualState[key].length
-          ? ""
+          ? console.log("key:", key, "length:", actualState[key].length)
           : (hasBlankValues = true)
         : ""
     );
-
     if (!hasChanges || hasBlankValues) {
       needToLock = true;
     }
-
     if (needToLock) {
       dispatch(setBtnLocked(true));
     } else {

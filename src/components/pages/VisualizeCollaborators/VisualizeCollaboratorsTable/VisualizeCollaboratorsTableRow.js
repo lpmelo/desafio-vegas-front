@@ -16,6 +16,7 @@ import {
 } from "../features/visualizeCollaboratorsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "./VisualizeCollaboratorsTableRow.css";
+import moment from "moment";
 
 const VisualizeCollaboratorsTableRow = ({ props }) => {
   const dispatch = useDispatch();
@@ -33,8 +34,20 @@ const VisualizeCollaboratorsTableRow = ({ props }) => {
     await dispatch(setIsLoading(true));
   };
 
+  const returnDateFormatted = (dateToFormat) => {
+    const defaultDate = dateToFormat;
+    const dateWhithoutFormat = moment(defaultDate, "YYYY-MM-DD");
+
+    const formattedDate = dateWhithoutFormat.format("DD/MM/YYYY");
+    return formattedDate;
+  };
+
   const handleOpenEditModal = (event, props) => {
-    dispatch(saveCollaboratorData(props));
+    const collaborator = {
+      ...props,
+      admissionDate: returnDateFormatted(props.admissionDate),
+    };
+    dispatch(saveCollaboratorData(collaborator));
     dispatch(openEditModal(true));
   };
 
@@ -59,7 +72,7 @@ const VisualizeCollaboratorsTableRow = ({ props }) => {
           {props.occupation}
         </Table.Cell>
         <Table.Cell textAlign="right" width={3}>
-          {props.admissionDate}
+          {returnDateFormatted(props.admissionDate)}
         </Table.Cell>
         <Table.Cell
           textAlign="center"
