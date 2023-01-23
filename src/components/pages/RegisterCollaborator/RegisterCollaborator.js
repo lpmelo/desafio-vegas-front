@@ -18,16 +18,27 @@ import {
   onSubmitFailed,
   onSubmitSuccess,
   clearValidations,
+  clearAutoCompleteAction,
+  finishSearchAutoCompleteAction,
+  searchAutoCompleteAction,
+  updateSelectAutoCompleteAction,
 } from "./features/registerCollaboratorSlice";
 import { getCep } from "../../../ApiCep";
 import IconUserCicle from "../../icons/IconUserCicle";
 import IconPlus from "../../icons/IconPlus";
-import { postNewDelivery } from "../../../Api";
+import { postNewCollaborator } from "../../../Api";
 import { v4 as uuidv4 } from "uuid";
+import SemanticUiReduxAutoComplete from "../../../lib/elementComponents/SemanticUIAutoComplete.js/SemanticUiAutoComplete";
+import AutoCompleteResultsRenderer from "./AutoCompleteResultsRenderer/AutoCompleteResultsRenderer";
+import IconIdCard from "../../icons/IconIdCard";
+import moment from "moment";
 
 const RegisterCollaborator = () => {
   const [hasValue, setHasValue] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const autoCompleteState = useSelector(
+    (state) => state.registerCollaborator.autoComplete
+  );
   const formValues = useSelector(
     (state) => state.registerCollaborator.formData
   );
@@ -35,6 +46,44 @@ const RegisterCollaborator = () => {
   const { submitSuccess, submitFailed } = useSelector(
     (state) => state.registerCollaborator.submitEvents
   );
+
+  const mockOptions = [
+    {
+      id: uuidv4(),
+      title: "Técnico em Informática",
+      category: "Suporte",
+      payment: "R$ 1000,00",
+      beneficts: "Não",
+    },
+    {
+      id: uuidv4(),
+      title: "Desenvolvedor Fullstack",
+      category: "Tecnologia da Informação",
+      payment: "R$ 3060,00",
+      beneficts: "Sim",
+    },
+    {
+      id: uuidv4(),
+      title: "Segurança",
+      category: "Serviços Gerais",
+      payment: "R$ 2750,00",
+      beneficts: "Não",
+    },
+    {
+      id: uuidv4(),
+      title: "Analista Contábil",
+      category: "Financeiro",
+      payment: "R$ 4320,00",
+      beneficts: "Sim",
+    },
+    {
+      id: uuidv4(),
+      title: "Diretor",
+      category: "Gestão",
+      payment: "R$ 15780,00",
+      beneficts: "Não",
+    },
+  ];
   const activePage = useSelector((state) => state.pageSwitcher.item);
 
   const dispatch = useDispatch();
@@ -45,6 +94,7 @@ const RegisterCollaborator = () => {
 
   const onSuccess = () => {
     dispatch(clearState(""));
+    dispatch(clearAutoCompleteAction());
     dispatch(onSubmitSuccess());
   };
 
@@ -97,7 +147,9 @@ const RegisterCollaborator = () => {
     const value = event.target.value;
     if (field === "cep" && value.length < 9) {
       dispatch(changeValue({ changedValue: value, field }));
-    } else if (field !== "cep") {
+    } else if (field === "cpf" && value.length < 12) {
+      dispatch(changeValue({ changedValue: value, field }));
+    } else if (field !== "cep" && field !== "cpf") {
       dispatch(changeValue({ changedValue: value, field }));
     }
   };
@@ -110,6 +162,7 @@ const RegisterCollaborator = () => {
       setIsDisabled(false);
     }
   };
+
   const handleSubmit = () => {
     let haveError = false;
     const formKeys = Object.keys(formValues);
@@ -120,23 +173,36 @@ const RegisterCollaborator = () => {
     } else {
       const newId = uuidv4();
 
-      postNewDelivery(
+      const date = moment(formValues.admissionDate, "DD/MM/YYYY");
+
+      const formattedDate = date.format("YYYY-MM-DD");
+
+      postNewCollaborator(
         newId,
         formValues.clientName,
-        formValues.deliveryDate,
+        formValues.cpf,
+        formattedDate,
         formValues.cep,
         formValues.uf,
         formValues.city,
         formValues.district,
         formValues.address,
-        formValues.number,
-        formValues.complement
-      ).then((res) => (res.data ? onSuccess() : console.log("erro")));
+        Number(formValues.number),
+        formValues.complement,
+        formValues.occupation
+      ).then((res) =>
+        res.message ? onSuccess() : console.log(res.response.data.message)
+      );
     }
+  };
+
+  const resultRenderer = (data) => {
+    return <AutoCompleteResultsRenderer props={data} />;
   };
 
   useEffect(() => {
     dispatch(clearState(""));
+    dispatch(clearAutoCompleteAction());
     dispatch(clearMessages());
     dispatch(clearValidations());
   }, [activePage]);
@@ -149,10 +215,10 @@ const RegisterCollaborator = () => {
   }, [formValues.cep]);
 
   useEffect(() => {
-    if (formValues.deliveryDate) {
-      verifyData("deliveryDate");
+    if (formValues.admissionDate) {
+      verifyData("admissionDate");
     }
-  }, [formValues.deliveryDate]);
+  }, [formValues.admissionDate]);
 
   return (
     <>
@@ -164,8 +230,8 @@ const RegisterCollaborator = () => {
               {submitSuccess && (
                 <Message
                   success
-                  header="Entrega cadastrada com sucesso!"
-                  content={`Sua entrega foi cadastrada com sucesso, para visualiza-la, acesse a aba 'Visualizar Entregas'`}
+                  header="Colaborador cadastrado com sucesso!"
+                  content={`Você cadastrou um colaborador com sucesso, para visualiza-lo, acesse a aba 'Visualizar Colaboradores'`}
                 />
               )}
 
@@ -202,15 +268,48 @@ const RegisterCollaborator = () => {
                     onBlur={(e) => handleBlur(e)}
                     required
                   />
-
+                  <Form.Field width={8}>
+                    <SemanticUiReduxAutoComplete
+                      id="occupation"
+                      state={autoCompleteState}
+                      placeholder={"Função do colaborador"}
+                      handleBlur={handleBlur}
+                      clearAction={clearAutoCompleteAction}
+                      finishSearchAction={finishSearchAutoCompleteAction}
+                      searchAction={searchAutoCompleteAction}
+                      updateSelectAction={updateSelectAutoCompleteAction}
+                      options={mockOptions}
+                      filterValueName="title"
+                      error={messages.occupation && messages.occupation}
+                      resultRenderer={resultRenderer}
+                      label="Função"
+                      required
+                    />
+                  </Form.Field>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Input
+                    id="cpf"
+                    placeholder="CPF"
+                    error={messages.cpf && messages.cpf}
+                    fluid
+                    width={8}
+                    icon={IconIdCard}
+                    iconPosition="left"
+                    label="CPF"
+                    value={formValues.cpf}
+                    onChange={(e) => handleChange(e, "cpf")}
+                    onBlur={(e) => handleBlur(e)}
+                    required
+                  />
                   <Form.Field width={4}>
                     <DateInput
-                      id="deliveryDate"
-                      name="deliveryDate"
+                      id="admissionDate"
+                      name="admissionDate"
                       label="Data de Admissão"
                       clearable
                       onClear={handleClearDate}
-                      error={messages.deliveryDate && messages.deliveryDate}
+                      error={messages.admissionDate && messages.admissionDate}
                       fluid
                       placeholder="Selecione a data"
                       dateFormat="DD/MM/YYYY"
@@ -218,10 +317,11 @@ const RegisterCollaborator = () => {
                       onChange={handleChangeDate}
                       onBlur={handleBlurDate}
                       closable
-                      value={formValues.deliveryDate}
+                      value={formValues.admissionDate}
                       required
                     />
                   </Form.Field>
+
                   <Form.Input
                     id="cep"
                     name="cep"

@@ -17,7 +17,9 @@ export const registerCollaboratorSlice = createSlice({
     },
     clearState: (state, action) => {
       state.formData.clientName = action.payload;
-      state.formData.deliveryDate = action.payload;
+      state.formData.cpf = action.payload;
+      state.formData.admissionDate = action.payload;
+      state.formData.occupation = action.payload;
       state.formData.cep = action.payload;
       state.formData.uf = action.payload;
       state.formData.city = action.payload;
@@ -29,21 +31,47 @@ export const registerCollaboratorSlice = createSlice({
     changeMessages: (state, action) => {
       state.messages = action.payload;
     },
-    clearMessages: (state, action) => {
+    clearMessages: (state) => {
       state.messages = {};
     },
-    onSubmitFailed: (state, action) => {
+    onSubmitFailed: (state) => {
       state.submitEvents.submitSuccess = false;
       state.submitEvents.submitFailed = true;
     },
-    onSubmitSuccess: (state, action) => {
+    onSubmitSuccess: (state) => {
       state.submitEvents.submitFailed = false;
       state.submitEvents.submitSuccess = true;
     },
-    clearValidations: (state, action) => {
+    clearValidations: (state) => {
       state.haveError = false;
       state.submitEvents.submitFailed = false;
       state.submitEvents.submitSuccess = false;
+    },
+    clearAutoCompleteAction: (state) => {
+      state.autoComplete = formInitialState.autoComplete;
+      state.formData.occupation = "";
+    },
+    searchAutoCompleteAction: (state, action) => {
+      state.autoComplete = {
+        ...state.autoComplete,
+        loading: true,
+        value: action.payload,
+      };
+    },
+    finishSearchAutoCompleteAction: (state, action) => {
+      state.autoComplete = {
+        ...state.autoComplete,
+        loading: false,
+        results: action.payload,
+      };
+    },
+    updateSelectAutoCompleteAction: (state, action) => {
+      state.autoComplete = {
+        ...state.autoComplete,
+        value: action.payload,
+      };
+      state.formData.occupation = state.autoComplete.value;
+      delete state.messages.occupation;
     },
   },
 });
@@ -57,5 +85,9 @@ export const {
   onSubmitFailed,
   onSubmitSuccess,
   clearValidations,
+  clearAutoCompleteAction,
+  searchAutoCompleteAction,
+  finishSearchAutoCompleteAction,
+  updateSelectAutoCompleteAction,
 } = registerCollaboratorSlice.actions;
 export const registerCollaboratorReducer = registerCollaboratorSlice.reducer;

@@ -10,9 +10,9 @@ import {
 import HomePage from "./components/pages/HomePage/HomePage";
 import RegisterCollaborator from "./components/pages/RegisterCollaborator/RegisterCollaborator";
 import VisualizeDeliveries from "./components/pages/VisualizeDeliveries/VisualizeDeliveries";
-import IconBox from "./components/icons/IconBox";
 import IconEye from "./components/icons/IconEye";
 import IconHome from "./components/icons/IconHome";
+import IconUserPlus from "./components/icons/IconUserPlus";
 
 const App = () => {
   const [activeItem, setActiveItem] = useState(0);
@@ -62,7 +62,7 @@ const App = () => {
             <Menu.Item
               name="Cadastro de Colaborador"
               index={1}
-              icon={<IconBox className="menu-icon" />}
+              icon={<IconUserPlus className="menu-icon" />}
               className="menu-item-submit"
               active={activeItem === 1}
               onClick={handleItemClick}

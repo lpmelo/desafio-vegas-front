@@ -1,0 +1,19 @@
+.autocomplete-label {
+  font-size: 13px;
+  margin-bottom: 4px !important;
+}
+
+.autocomplete-label-required {
+  font-size: 13px;
+  margin-bottom: 4px !important;
+}
+
+.error {
+  color: #9f3a38 !important;
+}
+
+.autocomplete-label-required::after {
+  margin: -0.2em 0 0 0.2em;
+  content: "*";
+  color: #db2828;
+}

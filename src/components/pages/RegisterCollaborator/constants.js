@@ -3,10 +3,13 @@ export const cepError = {
   pointing: "above",
 };
 
+export const cpfError = "Por favor, insira o documento CPF corretamente";
+
 export const formInitialState = {
   formData: {
     clientName: "",
-    deliveryDate: "",
+    cpf: "",
+    admissionDate: "",
     cep: "",
     uf: "",
     city: "",
@@ -14,17 +17,23 @@ export const formInitialState = {
     address: "",
     number: "",
     complement: "",
+    occupation: "",
   },
   messages: {},
   submitEvents: {
     submitFailed: false,
     submitSuccess: false,
   },
+  autoComplete: {
+    loading: false,
+    results: [],
+    value: "",
+  },
 };
 
 export const requiredFields = [
   "clientName",
-  "deliveryDate",
+  "admissionDate",
   "cep",
   "uf",
   "district",
@@ -40,6 +49,13 @@ const validateCep = (value) => {
   return false;
 };
 
+const validateCpf = (value) => {
+  if (value.length < 11) {
+    return true;
+  }
+  return false;
+};
+
 const genericValidation = (value) => {
   if (!value.length) {
     return true;
@@ -50,13 +66,15 @@ const genericValidation = (value) => {
 const errorMessage = (fieldName) => {
   const allErrors = {
     clientName: "Campo obrigatório",
-    deliveryDate: "Campo obrigatório",
-    cep: cepError,
+    cpf: cpfError,
+    admissionDate: "Campo obrigatório",
+    cep: cepError.content,
     uf: "Campo obrigatório",
     city: "Campo obrigatório",
     district: "Campo obrigatório",
     address: "Campo obrigatório",
     number: "Campo obrigatório",
+    occupation: "Campo obrigatório",
   };
 
   const errorMessage = allErrors[fieldName];
@@ -75,13 +93,15 @@ export const isValidCep = (fieldName, fieldLenght) => {
 export const validateFields = (fieldId, fieldValue) => {
   const fieldsId = {
     clientName: () => genericValidation(fieldValue),
-    deliveryDate: () => genericValidation(fieldValue),
+    cpf: () => validateCpf(fieldValue),
+    admissionDate: () => genericValidation(fieldValue),
     cep: () => validateCep(fieldValue),
     uf: () => genericValidation(fieldValue),
     city: () => genericValidation(fieldValue),
     district: () => genericValidation(fieldValue),
     address: () => genericValidation(fieldValue),
     number: () => genericValidation(fieldValue),
+    occupation: () => genericValidation(fieldValue),
   };
 
   const fieldValidate =
