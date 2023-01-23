@@ -73,6 +73,9 @@ export const registerCollaboratorSlice = createSlice({
       state.formData.occupation = state.autoComplete.value;
       delete state.messages.occupation;
     },
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
@@ -89,5 +92,6 @@ export const {
   searchAutoCompleteAction,
   finishSearchAutoCompleteAction,
   updateSelectAutoCompleteAction,
+  setIsLoading,
 } = registerCollaboratorSlice.actions;
 export const registerCollaboratorReducer = registerCollaboratorSlice.reducer;

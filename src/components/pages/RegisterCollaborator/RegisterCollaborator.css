@@ -66,3 +66,10 @@
   margin-top: 10%;
   width: 100%;
 }
+
+.loader-insert-collaborator {
+  position: absolute !important;
+  font-family: system-ui;
+  font-weight: bold;
+  transform: translateY(-50%) translateX(-50%) !important;
+}

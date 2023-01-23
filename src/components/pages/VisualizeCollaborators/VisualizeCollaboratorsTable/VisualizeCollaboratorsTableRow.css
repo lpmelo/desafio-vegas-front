@@ -1,0 +1,13 @@
+.action-icons-cell {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  justify-content: space-evenly !important;
+  align-items: center !important;
+}
+
+.action-icons:hover {
+  transition: transform 500ms !important;
+  transform: translateY(-15%) !important;
+  cursor: pointer;
+}

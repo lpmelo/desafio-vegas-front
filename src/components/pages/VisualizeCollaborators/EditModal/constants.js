@@ -5,44 +5,6 @@ export const cepError = {
 
 export const cpfError = "Por favor, insira o documento CPF corretamente";
 
-export const formInitialState = {
-  formData: {
-    clientName: "",
-    cpf: "",
-    admissionDate: "",
-    cep: "",
-    uf: "",
-    city: "",
-    district: "",
-    address: "",
-    number: "",
-    complement: "",
-    occupation: "",
-  },
-  messages: {},
-  submitEvents: {
-    submitFailed: false,
-    submitSuccess: false,
-  },
-  autoComplete: {
-    loading: false,
-    results: [],
-    value: "",
-  },
-  isLoading: false,
-};
-
-export const requiredFields = [
-  "clientName",
-  "admissionDate",
-  "cep",
-  "uf",
-  "district",
-  "address",
-  "number",
-  "complement",
-];
-
 const validateCep = (value) => {
   if (value.length < 8) {
     return true;
@@ -148,6 +110,8 @@ export const fieldsWithErrors = (allFieldIds, state) => {
       [error]: errorMessage(error),
     };
   });
+
+  console.log(formattedFieldError);
 
   return formattedFieldError;
 };

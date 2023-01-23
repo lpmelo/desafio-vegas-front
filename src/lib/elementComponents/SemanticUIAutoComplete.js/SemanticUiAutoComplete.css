@@ -8,8 +8,17 @@
   margin-bottom: 4px !important;
 }
 
+.autocomplete-label-required-disabled {
+  font-size: 13px;
+  margin-bottom: 4px !important;
+}
+
 .error {
   color: #9f3a38 !important;
+}
+
+.disabled-label {
+  opacity: 0.3 !important;
 }
 
 .autocomplete-label-required::after {
