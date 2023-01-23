@@ -1,12 +1,4 @@
 import axios from "axios";
-import {
-  REACT_APP_LARAVEL_API_BASE_URL,
-  REACT_APP_LARAVEL_API_DELETE,
-  REACT_APP_LARAVEL_API_POST,
-  REACT_APP_LARAVEL_API_ROUTE_GET_ALL,
-  REACT_APP_LARAVEL_API_ROUTE_GET_BY_ID,
-  REACT_APP_LARAVEL_API_ROUTE_PUT,
-} from "./constants";
 
 export const postNewCollaborator = async (
   id,
@@ -24,7 +16,7 @@ export const postNewCollaborator = async (
 ) => {
   try {
     const res = await axios.post(
-      `${REACT_APP_LARAVEL_API_BASE_URL}${REACT_APP_LARAVEL_API_POST}`,
+      `${process.env.REACT_APP_LARAVEL_API_BASE_URL}${process.env.REACT_APP_LARAVEL_API_POST}`,
       {
         id,
         clientName,
@@ -52,7 +44,7 @@ export const postNewCollaborator = async (
 export const getAllCollaborators = async () => {
   try {
     const res = await axios.get(
-      `${REACT_APP_LARAVEL_API_BASE_URL}${REACT_APP_LARAVEL_API_ROUTE_GET_ALL}`,
+      `${process.env.REACT_APP_LARAVEL_API_BASE_URL}${process.env.REACT_APP_LARAVEL_API_ROUTE_GET_ALL}`,
       {}
     );
 
@@ -67,7 +59,7 @@ export const getAllCollaborators = async () => {
 export const getCollaboratorById = async (id) => {
   try {
     const res = await axios.get(
-      `${REACT_APP_LARAVEL_API_BASE_URL}${REACT_APP_LARAVEL_API_ROUTE_GET_BY_ID}${id}`,
+      `${process.env.REACT_APP_LARAVEL_API_BASE_URL}${process.env.REACT_APP_LARAVEL_API_ROUTE_GET_BY_ID}${id}`,
       {}
     );
 
@@ -95,7 +87,7 @@ export const editCollaborator = async (
 ) => {
   try {
     const res = await axios.put(
-      `${REACT_APP_LARAVEL_API_BASE_URL}${REACT_APP_LARAVEL_API_ROUTE_PUT}${id}`,
+      `${process.env.REACT_APP_LARAVEL_API_BASE_URL}${process.env.REACT_APP_LARAVEL_API_ROUTE_PUT}${id}`,
       {
         clientName,
         cpf,
@@ -122,7 +114,7 @@ export const editCollaborator = async (
 export const deleteCollaborator = async (id) => {
   try {
     const res = await axios.delete(
-      `${REACT_APP_LARAVEL_API_BASE_URL}${REACT_APP_LARAVEL_API_DELETE}${id}`,
+      `${process.env.REACT_APP_LARAVEL_API_BASE_URL}${process.env.REACT_APP_LARAVEL_API_DELETE}${id}`,
       {}
     );
 
