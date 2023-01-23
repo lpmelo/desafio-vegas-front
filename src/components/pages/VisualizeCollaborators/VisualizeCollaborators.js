@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Segment } from "semantic-ui-react";
@@ -65,22 +66,28 @@ const VisualizeCollaborators = () => {
   };
 
   const handleUpdateCollaborator = async () => {
+    const date = moment(data.admissionDate, "DD/MM/YYYY");
+
+    const formattedDate = date.format("YYYY-MM-DD");
+
+    const collaborator = {
+      id: data.id,
+      clientName: data.clientName,
+      cpf: data.cpf,
+      admissionDate: formattedDate,
+      cep: data.cep,
+      uf: data.uf,
+      city: data.city,
+      district: data.district,
+      address: data.address,
+      number: Number(data.number),
+      complement: data.complement,
+      occupation: data.occupation,
+    };
+
     if (!Object.keys(messages).length) {
       dispatch(setBtnNotActiveActions(true));
-      await editCollaborator(
-        data.id,
-        data.clientName,
-        data.cpf,
-        data.admissionDate,
-        data.cep,
-        data.uf,
-        data.city,
-        data.district,
-        data.address,
-        data.number,
-        data.complement,
-        data.occupation
-      );
+      await editCollaborator(...collaborator);
       dispatch(setIsLoading(true));
     }
     dispatch(setBtnLocked(true));

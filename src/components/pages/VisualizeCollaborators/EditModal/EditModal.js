@@ -24,6 +24,7 @@ import {
 } from "./constants";
 import { getCep } from "../../../../ApiCep";
 import AutoCompleteResultsRenderer from "./AutoCompleteResultsRenderer/AutoCompleteResultsRenderer";
+import moment from "moment";
 
 const EditModal = () => {
   const dispatch = useDispatch();
@@ -154,8 +155,21 @@ const EditModal = () => {
     let needToLock = false;
     const keys = Object.keys(initialState);
 
+    const returnDateFormatted = (dateToFormat) => {
+      const dateWhithoutFormat = moment(dateToFormat, "DD/MM/YYYY");
+
+      const formattedDate = dateWhithoutFormat.format("YYYY-MM-DD");
+      return formattedDate;
+    };
+
     keys.forEach((key) =>
-      initialState[key] != actualState[key] ? (hasChanges = true) : ""
+      key === "admissionDate"
+        ? initialState[key] != returnDateFormatted(actualState[key])
+          ? (hasChanges = true)
+          : ""
+        : initialState[key] != actualState[key]
+        ? (hasChanges = true)
+        : ""
     );
 
     keys.forEach((key) =>
