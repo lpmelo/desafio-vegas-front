@@ -8,14 +8,19 @@ import RegisterTableRow from "../RegisterTable/RegisterTableRow";
 import IconPensil from "../../../icons/IconPensil";
 import IconTrashAlternate from "../../../icons/IconTrashAlternate";
 import { deleteCollaborator } from "../../../../Api";
-import { setIsLoading } from "../features/visualizeCollaboratorsSlice";
-import { useDispatch } from "react-redux";
+import {
+  openEditModal,
+  saveCollaboratorData,
+  setBtnNotActiveActions,
+  setIsLoading,
+} from "../features/visualizeCollaboratorsSlice";
+import { useDispatch, useSelector } from "react-redux";
 import "./VisualizeCollaboratorsTableRow.css";
 
 const VisualizeCollaboratorsTableRow = ({ props }) => {
   const dispatch = useDispatch();
 
-  const [buttonsActive, setButtonsActive] = useState(false);
+  const { btnNotActive } = useSelector((state) => state.visualizeCollaborators);
   const [activeIndex, setActiveIndex] = useState(false);
 
   const handleClick = (event) => {
@@ -23,14 +28,17 @@ const VisualizeCollaboratorsTableRow = ({ props }) => {
   };
 
   const deleteCollaboratorWork = async (id) => {
-    setButtonsActive(true);
+    await dispatch(setBtnNotActiveActions(true));
     await deleteCollaborator(id);
-    dispatch(setIsLoading(true));
+    await dispatch(setIsLoading(true));
   };
 
-  const handleOpenEditModal = (event) => {};
+  const handleOpenEditModal = (event, props) => {
+    dispatch(saveCollaboratorData(props));
+    dispatch(openEditModal(true));
+  };
 
-  const handleOpenWarningModal = (event, id) => {
+  const handleDeleteCollaborator = (event, id) => {
     deleteCollaboratorWork(id);
   };
 
@@ -57,14 +65,17 @@ const VisualizeCollaboratorsTableRow = ({ props }) => {
           textAlign="center"
           width={3}
           className="action-icons-cell"
-          disabled={buttonsActive}
+          disabled={btnNotActive}
         >
-          <div className="action-icons" onClick={(e) => handleOpenEditModal(e)}>
+          <div
+            className="action-icons"
+            onClick={(e) => handleOpenEditModal(e, props)}
+          >
             <IconPensil />
           </div>
           <div
             className="action-icons"
-            onClick={(e) => handleOpenWarningModal(e, props.id)}
+            onClick={(e) => handleDeleteCollaborator(e, props.id)}
           >
             <IconTrashAlternate />
           </div>

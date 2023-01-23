@@ -90,7 +90,8 @@ export const editCollaborator = async (
   district,
   address,
   number,
-  complement
+  complement,
+  occupation
 ) => {
   try {
     const res = await axios.put(
@@ -106,6 +107,7 @@ export const editCollaborator = async (
         address,
         number,
         complement,
+        occupation,
       }
     );
 

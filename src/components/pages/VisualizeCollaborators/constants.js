@@ -3,6 +3,20 @@ export const visualizeCollaboratorsInitialState = {
   isLoading: false,
   warningModal: false,
   idOnFocus: "",
+  editModal: {
+    open: false,
+    collaborator: {
+      data: {},
+      messages: {},
+      autoComplete: {
+        loading: false,
+        results: [],
+        value: "",
+      },
+      btnLocked: true,
+    },
+  },
+  btnNotActive: false,
 };
 
 export const visualizeCollaboratorsHeadCells = [

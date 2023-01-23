@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { Form, Input, Search } from "semantic-ui-react";
+import { Form, Search } from "semantic-ui-react";
 import "./SemanticUiAutoComplete.css";
 
 const SemanticUiReduxAutoComplete = ({
