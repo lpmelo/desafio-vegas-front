@@ -9,7 +9,7 @@ export const formInitialState = {
   formData: {
     clientName: "",
     cpf: "",
-    deliveryDate: "",
+    admissionDate: "",
     cep: "",
     uf: "",
     city: "",
@@ -33,7 +33,7 @@ export const formInitialState = {
 
 export const requiredFields = [
   "clientName",
-  "deliveryDate",
+  "admissionDate",
   "cep",
   "uf",
   "district",
@@ -67,7 +67,7 @@ const errorMessage = (fieldName) => {
   const allErrors = {
     clientName: "Campo obrigatório",
     cpf: cpfError,
-    deliveryDate: "Campo obrigatório",
+    admissionDate: "Campo obrigatório",
     cep: cepError.content,
     uf: "Campo obrigatório",
     city: "Campo obrigatório",
@@ -94,7 +94,7 @@ export const validateFields = (fieldId, fieldValue) => {
   const fieldsId = {
     clientName: () => genericValidation(fieldValue),
     cpf: () => validateCpf(fieldValue),
-    deliveryDate: () => genericValidation(fieldValue),
+    admissionDate: () => genericValidation(fieldValue),
     cep: () => validateCep(fieldValue),
     uf: () => genericValidation(fieldValue),
     city: () => genericValidation(fieldValue),

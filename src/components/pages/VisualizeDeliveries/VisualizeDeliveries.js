@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Segment } from "semantic-ui-react";
-import { getAllDeliveries } from "../../../Api";
+import { getAllCollaborators } from "../../../Api";
 import SemanticUiTable from "../../../lib/elementComponents/SemanticUiTable";
 import { visualizeDeliveriesHeadCells } from "./constants";
 import { saveAllDeliveries } from "./features/visualizeDeliveriesSlice";
@@ -19,7 +19,7 @@ const VisualizeDeliveries = () => {
   };
 
   useEffect(() => {
-    getAllDeliveries().then((res) =>
+    getAllCollaborators().then((res) =>
       res ? onResponseSuccess(res) : console.log("erro")
     );
   }, []);

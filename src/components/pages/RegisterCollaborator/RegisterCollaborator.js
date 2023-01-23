@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Form,
-  Grid,
-  Label,
-  List,
-  Message,
-  Segment,
-} from "semantic-ui-react";
+import { Button, Form, Grid, Message, Segment } from "semantic-ui-react";
 import { DateInput } from "semantic-ui-calendar-react";
 import "./RegisterCollaborator.css";
 import IconSearch from "../../icons/IconSearch";
@@ -34,11 +26,12 @@ import {
 import { getCep } from "../../../ApiCep";
 import IconUserCicle from "../../icons/IconUserCicle";
 import IconPlus from "../../icons/IconPlus";
-import { postNewDelivery } from "../../../Api";
+import { postNewCollaborator } from "../../../Api";
 import { v4 as uuidv4 } from "uuid";
 import SemanticUiReduxAutoComplete from "../../../lib/elementComponents/SemanticUIAutoComplete.js/SemanticUiAutoComplete";
 import AutoCompleteResultsRenderer from "./AutoCompleteResultsRenderer/AutoCompleteResultsRenderer";
 import IconIdCard from "../../icons/IconIdCard";
+import moment from "moment";
 
 const RegisterCollaborator = () => {
   const [hasValue, setHasValue] = useState(false);
@@ -180,18 +173,26 @@ const RegisterCollaborator = () => {
     } else {
       const newId = uuidv4();
 
-      postNewDelivery(
+      const date = moment(formValues.admissionDate, "DD/MM/YYYY");
+
+      const formattedDate = date.format("YYYY-MM-DD");
+
+      postNewCollaborator(
         newId,
         formValues.clientName,
-        formValues.deliveryDate,
+        formValues.cpf,
+        formattedDate,
         formValues.cep,
         formValues.uf,
         formValues.city,
         formValues.district,
         formValues.address,
-        formValues.number,
-        formValues.complement
-      ).then((res) => (res.data ? onSuccess() : console.log("erro")));
+        Number(formValues.number),
+        formValues.complement,
+        formValues.occupation
+      ).then((res) =>
+        res.message ? onSuccess() : console.log(res.response.data.message)
+      );
     }
   };
 
@@ -214,10 +215,10 @@ const RegisterCollaborator = () => {
   }, [formValues.cep]);
 
   useEffect(() => {
-    if (formValues.deliveryDate) {
-      verifyData("deliveryDate");
+    if (formValues.admissionDate) {
+      verifyData("admissionDate");
     }
-  }, [formValues.deliveryDate]);
+  }, [formValues.admissionDate]);
 
   return (
     <>
@@ -229,8 +230,8 @@ const RegisterCollaborator = () => {
               {submitSuccess && (
                 <Message
                   success
-                  header="Entrega cadastrada com sucesso!"
-                  content={`Sua entrega foi cadastrada com sucesso, para visualiza-la, acesse a aba 'Visualizar Entregas'`}
+                  header="Colaborador cadastrado com sucesso!"
+                  content={`Você cadastrou um colaborador com sucesso, para visualiza-lo, acesse a aba 'Visualizar Colaboradores'`}
                 />
               )}
 
@@ -303,12 +304,12 @@ const RegisterCollaborator = () => {
                   />
                   <Form.Field width={4}>
                     <DateInput
-                      id="deliveryDate"
-                      name="deliveryDate"
+                      id="admissionDate"
+                      name="admissionDate"
                       label="Data de Admissão"
                       clearable
                       onClear={handleClearDate}
-                      error={messages.deliveryDate && messages.deliveryDate}
+                      error={messages.admissionDate && messages.admissionDate}
                       fluid
                       placeholder="Selecione a data"
                       dateFormat="DD/MM/YYYY"
@@ -316,7 +317,7 @@ const RegisterCollaborator = () => {
                       onChange={handleChangeDate}
                       onBlur={handleBlurDate}
                       closable
-                      value={formValues.deliveryDate}
+                      value={formValues.admissionDate}
                       required
                     />
                   </Form.Field>
