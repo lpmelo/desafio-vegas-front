@@ -87,7 +87,20 @@ const VisualizeCollaborators = () => {
 
     if (!Object.keys(messages).length) {
       dispatch(setBtnNotActiveActions(true));
-      await editCollaborator(...collaborator);
+      await editCollaborator(
+        collaborator.id,
+        collaborator.clientName,
+        collaborator.cpf,
+        collaborator.admissionDate,
+        collaborator.cep,
+        collaborator.uf,
+        collaborator.city,
+        collaborator.district,
+        collaborator.address,
+        collaborator.number,
+        collaborator.complement,
+        collaborator.occupation
+      );
       dispatch(setIsLoading(true));
     }
     dispatch(setBtnLocked(true));

@@ -165,13 +165,21 @@ const EditModal = () => {
         : ""
     );
 
-    keys.forEach((key) =>
-      key === "complement"
-        ? actualState[key].length
-          ? console.log("key:", key, "length:", actualState[key].length)
-          : (hasBlankValues = true)
-        : ""
-    );
+    keys.forEach(function (key) {
+      if (key !== "complement") {
+        if (key === "admissionDate") {
+          if (actualState[key].length < 10) {
+            hasBlankValues = true;
+          }
+        }
+        if (!actualState[key].length) {
+          if (!actualState[key]) {
+            hasBlankValues = true;
+          }
+        }
+      }
+    });
+
     if (!hasChanges || hasBlankValues) {
       needToLock = true;
     }
