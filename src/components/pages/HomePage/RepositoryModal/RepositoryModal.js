@@ -33,7 +33,9 @@ const RepositoryModal = ({ open, setOpen }) => {
             <>
               {backModalText}
               <div className="link-container">
-                <a href="">Repositório Back End</a>
+                <a href="https://github.com/lpmelo/desafio-vegas-back">
+                  Repositório Back End
+                </a>
               </div>
             </>
           )}
